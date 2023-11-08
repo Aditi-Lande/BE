@@ -1,0 +1,48 @@
+//SPDX-License-Identifier:GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0 ;
+
+import "hardhat/console.sol";
+
+contract MarksManagementSys{
+
+    struct Student{
+        int256 ID;
+        string FirstName ;
+        string Lastname;
+        int256 Marks;
+
+    }
+
+    address owner;
+    int256 public stdCount = 0 ;
+    mapping(int256=>Student)public stdRecords;
+    
+    constructor(){
+        owner=msg.sender;
+    }
+
+    modifier onlyOwner(){
+        require(owner==msg.sender);
+
+        _;
+    }
+
+
+    function addNewRecords(
+        int256 _ID,
+        string memory _FirstName,
+        string memory _LastName,
+        int256 _Marks
+
+    )public onlyOwner{
+
+        stdCount=stdCount+1;
+        stdRecords[stdCount]=Student(_ID,_FirstName,_LastName,_Marks);
+
+    }
+
+    fallback()external{
+        console.log("Fallback function called");
+    }
+}
